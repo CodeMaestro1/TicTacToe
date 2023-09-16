@@ -1,3 +1,8 @@
+<div style="text-align:center;">
+  <a href="https://ibb.co/rQ5yQn7"><img src="https://i.ibb.co/VLMBLXj/Tic-Tac-Toe.png" alt="Tic-Tac-Toe" border="0"></a>
+</div>
+
+
 # TicTacToe
 A Java implementation of the classic 2-player game with a GUI. Challenge your friends to see who wins!
 
