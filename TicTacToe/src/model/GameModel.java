@@ -13,16 +13,18 @@ import controller.GameController;
 
 public class GameModel {
 
-    private GameController gc;
+    
+	private GameController gc;
     private int mover;
     private boolean inGame;
     private RandomPlayer mrBean;
     private String rightPlayerName;
     private String leftPlayerName;
-    private Player rightPlayer;
-    private Player leftPlayer;
+    private Timer timer;
     
-    private static final long MOVE_DELAY = 1000; // 1 second delay for AI moves
+    private static final int MOVE_DELAY = 1000; // 1 second delay for AI moves
+    private static final String SYMBOL_X = "X";
+    private static final String SYMBOL_O = "O";
 
     /**
      * Constructor for the GameModel class.
@@ -53,17 +55,24 @@ public class GameModel {
      * If the left player's name is "Hal" and it's their turn (mover == 0), AI uses the Minimax algorithm to find the best move.
      */
     public void aiMove() {
+    	
         this.rightPlayerName = gc.getMain().getRightPlayer().getPlayer().getName();
         this.leftPlayerName = gc.getMain().getLeftPlayer().getPlayer().getName();
 
-        if (rightPlayerName.equals("Hal") && mover == 1) {
-            AiPlayer ai = new AiPlayer("O");
-            ai.findBestMove(gc.getGameBoard().getBoard(), "X");
+        if (rightPlayerName != null && rightPlayerName.equals("Hal") && mover == 1) {
+            AiPlayer ai = new AiPlayer(SYMBOL_O);
+            ai.findBestMove(gc.getGameBoard().getBoard(), SYMBOL_X);
             int bestRow = ai.getBestRow();
             int bestCol = ai.getBestCol();
+            
+            
+            // Cancel the existing timer task, if it exists
+            if (timer != null) {
+                timer.cancel();
+            }
 
             // Add a delay before executing the AI move
-            Timer timer = new Timer();
+            timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -72,14 +81,19 @@ public class GameModel {
             }, MOVE_DELAY);
         }
 
-        if (leftPlayerName.equals("Hal") && mover == 0) {
-            AiPlayer ai = new AiPlayer("X");
-            ai.findBestMove(gc.getGameBoard().getBoard(), "O");
+        if (leftPlayerName != null && leftPlayerName.equals("Hal") && mover == 0) {
+            AiPlayer ai = new AiPlayer(SYMBOL_X);
+            ai.findBestMove(gc.getGameBoard().getBoard(), SYMBOL_O);
             int bestRow = ai.getBestRow();
             int bestCol = ai.getBestCol();
+            
+            // Cancel the existing timer task, if it exists
+            if (timer != null) {
+                timer.cancel();
+            }
 
             // Add a delay before executing the AI move
-            Timer timer = new Timer();
+            timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -98,13 +112,18 @@ public class GameModel {
         rightPlayerName = gc.getMain().getRightPlayer().getPlayer().getName();
         leftPlayerName = gc.getMain().getLeftPlayer().getPlayer().getName();
 
-        if (rightPlayerName.equals("Mr.Bean") && mover == 1) {
+        if (rightPlayerName != null && rightPlayerName.equals("Mr.Bean") && mover == 1) {
             mrBean.playRandomMove(gc.getGameBoard().getBoard());
             int row = mrBean.getRow();
             int col = mrBean.getColumn();
+            
+            // Cancel the existing timer task, if it exists
+            if (timer != null) {
+                timer.cancel();
+            }
 
             // Add a delay before executing Mr. Bean's move
-            Timer timer = new Timer();
+            timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -113,13 +132,19 @@ public class GameModel {
             }, MOVE_DELAY);
         }
 
-        if (leftPlayerName.equals("Mr.Bean") && mover == 0) {
+        if (leftPlayerName != null && leftPlayerName.equals("Mr.Bean") && mover == 0) {
             mrBean.playRandomMove(gc.getGameBoard().getBoard());
             int row = mrBean.getRow();
             int col = mrBean.getColumn();
+            
+            
+            // Cancel the existing timer task, if it exists
+            if (timer != null) {
+                timer.cancel();
+            }
 
             // Add a delay before executing Mr. Bean's move
-            Timer timer = new Timer();
+            timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -133,7 +158,11 @@ public class GameModel {
      * Checks for a winning move on the Tic-Tac-Toe board.
      * If a winning move is found, it handles the game end and updates player scores accordingly.
      */
-    public void checkWinner() {
+    public boolean checkWinner() {
+        if (!inGame) {
+            return true; // The game is over.
+        }
+        
         String[][] board = gc.getGameBoard().getBoard();
 
         // Check rows
@@ -141,7 +170,7 @@ public class GameModel {
             if (isWinningMove(board[i][0], board[i][1], board[i][2])) {
                 markWinningCellsInRow(i);
                 handleWinningMove(board[i][0]);
-                break;
+                return true; // Return true if a win is found
             }
         }
 
@@ -150,7 +179,7 @@ public class GameModel {
             if (isWinningMove(board[0][j], board[1][j], board[2][j])) {
                 markWinningCellsInColumn(j);
                 handleWinningMove(board[0][j]);
-                break;
+                return true; // Return true if a win is found
             }
         }
 
@@ -158,17 +187,23 @@ public class GameModel {
         if (isWinningMove(board[0][0], board[1][1], board[2][2])) {
             markWinningCellsInDiagonal(true);
             handleWinningMove(board[0][0]);
+            return true; // Return true if a win is found
         } else if (isWinningMove(board[0][2], board[1][1], board[2][0])) {
             markWinningCellsInDiagonal(false);
-        	handleWinningMove(board[0][2]);
-
+            handleWinningMove(board[0][2]);
+            return true; // Return true if a win is found
         }
 
-        // Check for a tie
+        // Check for a tie (if no win has been found)
         if (isFull()) {
             handleTie();
+            return true;
         }
+
+        // If no win or tie is found, return false
+        return false;
     }
+
 
     private void markWinningCellsInRow(int row) {
         for (int j = 0; j < 3; j++) {
@@ -194,51 +229,42 @@ public class GameModel {
         return symbol1 != null && symbol1.equals(symbol2) && symbol1.equals(symbol3);
     }
 
-    private void handleWinningMove(String winBoard) {
+    private void handleWinningMove(String winBoardSymbol) {
+        Player leftPlayer;
+        Player rightPlayer;
 
-        this.rightPlayer = gc.getMain().getRightPlayer().getPlayer();
-        this.leftPlayer = gc.getMain().getLeftPlayer().getPlayer();
-
+        rightPlayer = gc.getMain().getRightPlayer().getPlayer();
+        leftPlayer = gc.getMain().getLeftPlayer().getPlayer();
 
         inGame = false;
-        gc.getMain().getBannerPanel().getDoneButton().setEnabled(true);
-
-        String currentPlayerSymbol = winBoard;
-        if (currentPlayerSymbol.equals("X")) {
-            gc.getMain().getLeftPlayer().getPlayer().setWins(gc.getMain().getLeftPlayer().getPlayer().getWins() + 1);
+            
+        if (winBoardSymbol.equals(SYMBOL_X)) {
+            leftPlayer.setWins(leftPlayer.getWins() + 1);
         } else {
-            gc.getMain().getRightPlayer().getPlayer().setWins(gc.getMain().getRightPlayer().getPlayer().getWins() + 1);
+            rightPlayer.setWins(rightPlayer.getWins() + 1);
         }
 
-        rightPlayer.setTotalGames(gc.getMain().getRightPlayer().getPlayer().getTotalGames() + 1);
-        leftPlayer.setTotalGames(gc.getMain().getLeftPlayer().getPlayer().getTotalGames() + 1);
+        rightPlayer.setTotalGames(rightPlayer.getTotalGames() + 1);
+        leftPlayer.setTotalGames(leftPlayer.getTotalGames() + 1);
         rightPlayer.updateScore();
         leftPlayer.updateScore();
 
     }
 
     private void handleTie() {
+        Player leftPlayerTie;
+        Player rightPlayerTie;
 
-        this.rightPlayer = gc.getMain().getRightPlayer().getPlayer();
-        this.leftPlayer = gc.getMain().getLeftPlayer().getPlayer();
-
-        rightPlayer.setTotalGames(rightPlayer.getTotalGames() + 1);
-        leftPlayer.setTotalGames(leftPlayer.getTotalGames() + 1);
-        rightPlayer.setTies(rightPlayer.getTies() + 1);
-        leftPlayer.setTies(leftPlayer.getTies() + 1);
-        rightPlayer.updateScore();
-        leftPlayer.updateScore();
-    }
-
-    /**
-     * Checks if a cell on the board is available (not already chosen by a player).
-     *
-     * @param row The row index of the cell to check.
-     * @param column The column index of the cell to check.
-     * @return true if the cell is available, false otherwise.
-     */
-    public boolean checkAvailability(int row, int column) {
-        return !gc.getGameBoard().getCells()[row - 1][column - 1].getChosen();
+        rightPlayerTie = gc.getMain().getRightPlayer().getPlayer();
+        leftPlayerTie = gc.getMain().getLeftPlayer().getPlayer();
+        
+        inGame = false;
+        rightPlayerTie.setTies(rightPlayerTie.getTies() + 1);
+        leftPlayerTie.setTies(leftPlayerTie.getTies() + 1);
+        rightPlayerTie.setTotalGames(rightPlayerTie.getTotalGames() + 1);
+        leftPlayerTie.setTotalGames(leftPlayerTie.getTotalGames() + 1);
+        rightPlayerTie.updateScore();
+        leftPlayerTie.updateScore();
     }
 
     /**
@@ -247,15 +273,17 @@ public class GameModel {
      * @return true if the board is full, false otherwise.
      */
     public boolean isFull() {
-        for (int i = 1; i < 4; i++) {
-            for (int j = 1; j < 4; j++) {
-                if (gc.getModel().checkAvailability(i, j)) {
-                    return false;
+        String[][] board = gc.getGameBoard().getBoard();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == null) {
+                    return false; // If any cell is null, the board is not full
                 }
             }
         }
-        return true;
+        return true; // All cells are non-null, indicating a full board
     }
+
 
     /**
      * Changes the current mover (player turn) and schedules AI moves with a delay.

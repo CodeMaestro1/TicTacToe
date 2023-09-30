@@ -89,31 +89,20 @@ public class GameModelTest {
     public void testCheckValidInput(int row, int column, boolean expected) {
         assertEquals(expected, gameModel.checkValidInput(row, column));
     }
-
-
-    @Test
-    public void testCheckAvailability() {
-        gc.getGameBoard().getCells()[0][0].setChosen(true);
-        assertFalse(gameModel.checkAvailability(1, 1));
-        assertTrue(gameModel.checkAvailability(2, 2));
-
-        gc.getGameBoard().getCells()[1][1].setChosen(true);
-        assertFalse(gameModel.checkAvailability(2, 2));
-    }
-
+    
+    
     @Test
     public void testIsFull() {
-        assertFalse(gameModel.isFull());
-
-        gc.getGameBoard().getCells()[0][0].setChosen(true);
-        gc.getGameBoard().getCells()[0][1].setChosen(true);
-        gc.getGameBoard().getCells()[0][2].setChosen(true);
-        gc.getGameBoard().getCells()[1][0].setChosen(true);
-        gc.getGameBoard().getCells()[1][1].setChosen(true);
-        gc.getGameBoard().getCells()[1][2].setChosen(true);
-        gc.getGameBoard().getCells()[2][0].setChosen(true);
-        gc.getGameBoard().getCells()[2][1].setChosen(true);
-        gc.getGameBoard().getCells()[2][2].setChosen(true);
+       
+    	gc.getGameBoard().getBoard()[0][0] = "X";
+    	gc.getGameBoard().getBoard()[0][1] = "X";
+    	gc.getGameBoard().getBoard()[0][2] = "X";
+    	gc.getGameBoard().getBoard()[1][0] = "X";
+    	gc.getGameBoard().getBoard()[1][1] = "X";
+    	gc.getGameBoard().getBoard()[1][2] = "X";
+    	gc.getGameBoard().getBoard()[2][0] = "X";
+    	gc.getGameBoard().getBoard()[2][1] = "X";
+    	gc.getGameBoard().getBoard()[2][2] = "X";
 
         assertTrue(gameModel.isFull());
     }

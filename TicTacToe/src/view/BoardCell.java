@@ -64,11 +64,10 @@ public class BoardCell extends GamePanel implements MouseListener {
 
 	        chosen = true;
 	        gc.getGameBoard().getBoard()[this.row][this.collumn] = (gc.getModel().getMover() == 0) ? "X" : "O";
-	        if (gc.getModel().isFull()) {
+	        if (gc.getModel().checkWinner()) {
 	            gc.getMain().getBannerPanel().getDoneButton().setEnabled(true);
 	        }
 
-			gc.getModel().checkWinner();
 	        gc.getModel().changeMover();
 	    }
 	}
