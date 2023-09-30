@@ -1,3 +1,8 @@
+<div style="text-align:center;">
+  <a href="https://ibb.co/rQ5yQn7"><img src="https://i.ibb.co/VLMBLXj/Tic-Tac-Toe.png" alt="Tic-Tac-Toe" border="0"></a>
+</div>
+
+
 # TicTacToe
 A Java implementation of the classic 2-player game with a GUI. Challenge your friends to see who wins!
 
@@ -43,7 +48,7 @@ This project makes use of the following external libraries and tools:
 - [EasyMock](https://easymock.org/): A mocking framework for Java that allows you to create mock objects for testing purposes.
 - [Swing](https://docs.oracle.com/javase/8/docs/technotes/guides/swing/): A Java GUI widget toolkit that enables you to create a graphical user interface for your applications.
 
-Special thanks to **John Sinanins** for his valuable contribution to the development of the graphical user interface (GUI) of the TicTacToe game. His dedication and expertise have significantly enhanced the user experience of this project.
+Special thanks to **John Sinanis** for his valuable contribution to the development of the graphical user interface (GUI) of the TicTacToe game. His dedication and expertise have significantly enhanced the user experience of this project.
 
 We extend our gratitude to the developers and contributors of the mentioned open-source projects, as well as any other individuals who have helped or inspired us during the development of this project. Your support has been invaluable!
 
