@@ -49,7 +49,11 @@ public class ReadData {
                     int ties = input.nextInt();
                     int totalGames = input.nextInt();
                     int wins = input.nextInt();
-                    float score = input.nextFloat();
+
+                 // Read the score as a string and replace commas with periods
+                    String scoreStr = input.next().replace(',', '.');
+                    float score = Float.parseFloat(scoreStr);
+                    
                     gc.getPlayerRoster().getPlayer()[a].setName(name);
                     gc.getPlayerRoster().getPlayer()[a].setTies(ties);
                     gc.getPlayerRoster().getPlayer()[a].setTotalGames(totalGames);

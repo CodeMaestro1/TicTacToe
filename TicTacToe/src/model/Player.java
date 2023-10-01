@@ -61,10 +61,14 @@ public class Player {
 	}
 	
 	public void updateScore() {
-		this.score = (float) (( (double )50*((2 * this.wins) + this.ties))/this.totalGames);
-		df.format(score);
-		
+	    String formattedScore = df.format((double) 50 * ((2 * this.wins) + this.ties) / this.totalGames);
+	    
+	    // Replace any commas with periods before parsing as a float
+	    formattedScore = formattedScore.replace(",", ".");
+	    
+	    this.score = Float.parseFloat(formattedScore);
 	}
+
 
 	public int getWins() {
 		return wins;

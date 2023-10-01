@@ -37,8 +37,6 @@ public class WriteData {
 
         try (FileWriter writer = new FileWriter(file)) {
         	
-            DecimalFormat decimalFormat = new DecimalFormat("#.000");
-
             writer.write(gameController.getPlayerRoster().getNumOfPlayers() + "\n");
 
             for (int g = 0; g < gameController.getPlayerRoster().getNumOfPlayers(); g++) {
@@ -46,8 +44,7 @@ public class WriteData {
                         gameController.getPlayerRoster().getPlayer()[g].getTies() + " " +
                         gameController.getPlayerRoster().getPlayer()[g].getTotalGames() + " " +
                         gameController.getPlayerRoster().getPlayer()[g].getWins() + " " +
-                        decimalFormat.format(gameController.getPlayerRoster().getPlayer()[g].getScore()).replace(".", ",") +
-                        "\n");
+                        gameController.getPlayerRoster().getPlayer()[g].getScore() + "\n");
 
                 for (int a = 4; a >= 0; a--) {
                     writer.write(gameController.getPlayerRoster().getPlayer()[g].getRecentGame(a, 0) + " " +
