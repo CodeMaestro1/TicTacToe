@@ -7,8 +7,6 @@ package utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
-
 import controller.GameController;
 
 public class WriteData {
