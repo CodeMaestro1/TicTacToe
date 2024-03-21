@@ -13,7 +13,6 @@ import controller.GameController;
 
 public class GameModel {
 
-    
 	private GameController gc;
     private int mover;
     private boolean inGame;

@@ -12,6 +12,28 @@ public class RandomPlayer {
     private static Random rand = new Random();
 
     /**
+     * Generates a random move on the Tic-Tac-Toe board.
+     * The method randomly chooses a cell on the board and checks if it's empty.
+     * If the cell is empty, the move is valid, and the row and column indices are updated accordingly.
+     * If the chosen cell is not empty, it generates another random move until a valid move is found.
+     *
+     * @param board The current state of the Tic-Tac-Toe board.
+     */
+    public void playRandomMove(String[][] board) {
+        boolean validInput = false;
+        do {
+            int intRandom = rand.nextInt(9) + 1; // generate random values from 1-9
+
+            row = (intRandom - 1) / 3; // calculate the row index
+            column = (intRandom - 1) % 3; // calculate the column index
+
+            if (board[row][column] == null) {
+                validInput = true;
+            }
+        } while (!validInput);
+    }
+    
+    /**
      * Gets the row index of the move.
      *
      * @return The row index of the move.
@@ -45,27 +67,5 @@ public class RandomPlayer {
      */
     public void setColumn(int column) {
         this.column = column;
-    }
-
-    /**
-     * Generates a random move on the Tic-Tac-Toe board.
-     * The method randomly chooses a cell on the board and checks if it's empty.
-     * If the cell is empty, the move is valid, and the row and column indices are updated accordingly.
-     * If the chosen cell is not empty, it generates another random move until a valid move is found.
-     *
-     * @param board The current state of the Tic-Tac-Toe board.
-     */
-    public void playRandomMove(String[][] board) {
-        boolean validInput = false;
-        do {
-            int intRandom = rand.nextInt(9) + 1; // generate random values from 1-9
-
-            row = (intRandom - 1) / 3; // calculate the row index
-            column = (intRandom - 1) % 3; // calculate the column index
-
-            if (board[row][column] == null) {
-                validInput = true;
-            }
-        } while (!validInput);
     }
 }

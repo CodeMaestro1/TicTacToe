@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -140,20 +141,27 @@ public class GameController {
 	public void addPlayer() {
 	    String playerName;
 	    boolean shouldContinue = true;
-	    
+
 	    do {
 	        playerName = JOptionPane.showInputDialog("Enter Player's Name:");
-	        
-	        if (!playerRoster.checkPlayer(playerName) && playerName != null) {
-	            Player player = new Player(playerName);
-	            playerRoster.addPlayer(player);
-	            main.printAddSuccessMessage();
-	            shouldContinue = false;
-	        } else if (playerName == null) {
+
+	        if (playerName != null) {
+	            // Use a regular expression to check if the playerName contains only alphanumeric characters
+	            if (Pattern.matches("^[a-zA-Z0-9]*$", playerName)) {
+	                if (!playerRoster.checkPlayer(playerName)) {
+	                    Player player = new Player(playerName);
+	                    playerRoster.addPlayer(player);
+	                    main.printAddSuccessMessage();
+	                    shouldContinue = false;
+	                } else {
+	                    main.printInvalidPlayer();
+	                }
+	            } else {
+	                main.printInvalidCharacter();
+	            }
+	        } else {
 	            // User canceled the input, break out of the loop
 	            shouldContinue = false;
-	        } else {
-	            main.printInvalidPlayer();
 	        }
 	    } while (shouldContinue);
 	}

@@ -77,6 +77,14 @@ public class MainWindow extends JFrame {
                 "Invalid Player",
                 JOptionPane.ERROR_MESSAGE);
     }
+    /**
+     * Displays a message dialog to indicate that the name of the player is not valid.
+     */
+	public void printInvalidCharacter() {
+		JOptionPane.showMessageDialog(this, "\"Invalid character in the player's name. Please use only alphanumeric characters.\"",
+				"Invalid Character",
+				JOptionPane.ERROR_MESSAGE);
+	}
     
     
     /**
@@ -301,4 +309,5 @@ public class MainWindow extends JFrame {
     public void setMainAreaPanel(MainAreaPanel mainAreaPanel) {
         this.mainAreaPanel = mainAreaPanel;
     }
+
 }
