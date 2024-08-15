@@ -64,20 +64,7 @@ public class GameModel {
             int bestRow = ai.getBestRow();
             int bestCol = ai.getBestCol();
             
-            
-            // Cancel the existing timer task, if it exists
-            if (timer != null) {
-                timer.cancel();
-            }
-
-            // Add a delay before executing the AI move
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    gc.getGameBoard().getCells()[bestRow][bestCol].chooseCell();
-                }
-            }, MOVE_DELAY);
+            scheduleMove(bestRow, bestCol);
         }
 
         if (leftPlayerName != null && leftPlayerName.equals("Hal") && mover == 0) {
@@ -86,19 +73,7 @@ public class GameModel {
             int bestRow = ai.getBestRow();
             int bestCol = ai.getBestCol();
             
-            // Cancel the existing timer task, if it exists
-            if (timer != null) {
-                timer.cancel();
-            }
-
-            // Add a delay before executing the AI move
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    gc.getGameBoard().getCells()[bestRow][bestCol].chooseCell();
-                }
-            }, MOVE_DELAY);
+            scheduleMove(bestRow, bestCol);
         }
     }
 
@@ -116,19 +91,7 @@ public class GameModel {
             int row = mrBean.getRow();
             int col = mrBean.getColumn();
             
-            // Cancel the existing timer task, if it exists
-            if (timer != null) {
-                timer.cancel();
-            }
-
-            // Add a delay before executing Mr. Bean's move
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    gc.getGameBoard().getCells()[row][col].chooseCell();
-                }
-            }, MOVE_DELAY);
+            scheduleMove(row, col);
         }
 
         if (leftPlayerName != null && leftPlayerName.equals("Mr.Bean") && mover == 0) {
@@ -136,21 +99,33 @@ public class GameModel {
             int row = mrBean.getRow();
             int col = mrBean.getColumn();
             
-            
-            // Cancel the existing timer task, if it exists
-            if (timer != null) {
-                timer.cancel();
-            }
-
-            // Add a delay before executing Mr. Bean's move
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    gc.getGameBoard().getCells()[row][col].chooseCell();
-                }
-            }, MOVE_DELAY);
+            scheduleMove(row, col);
         }
+    }
+    
+    /**
+    * Schedules a move to be executed after a specified delay.
+    * <p>
+    * This method first cancels any existing timer task to ensure that only one move
+    * is scheduled at a time. It then creates a new `Timer` instance and schedules
+    * a `TimerTask` that will execute the move on the Tic-Tac-Toe board after a delay
+    * defined by the constant {@link #MOVE_DELAY}.
+    *
+    * @param row The row index of the cell where the move will be executed.
+    * @param col The column index of the cell where the move will be executed.
+    */
+    private void scheduleMove(int row, int col) {
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                gc.getGameBoard().getCells()[row][col].chooseCell();
+            }
+        }, MOVE_DELAY);
     }
 
     /**
