@@ -4,17 +4,9 @@ package model;
  * Factory class for creating instances of PlayerAction based on player type.
  */
 public class PlayerActionFactory {
-
-    /**
-     * Enum representing the different player types.
-     */
-    public enum PlayerName {
-        HAL,
-        MR_BEAN
-    }
     
-    private final static String BEST_PLAYER = "Hal";
-    private final static String RANDOM_PLAYER = "Mr.Bean";
+    private static final String BEST_PLAYER = "Hal";
+    private static final String RANDOM_PLAYER = "Mr.Bean";
 
     /**
      * Creates a PlayerAction instance based on the player name.
@@ -25,12 +17,12 @@ public class PlayerActionFactory {
      * @return The corresponding PlayerAction instance.
      * @throws IllegalArgumentException if the playerName does not match any known type.
      */
-    public static PlayerAction createPlayerAction(String playerName, String symbol) {
+    public static Player createPlayerAction(String playerName, String symbol) {
         switch (playerName) {
             case BEST_PLAYER:
-                return new AiPlayerAction(symbol);
+                //return new AiPlayerAction(symbol);
             case RANDOM_PLAYER:
-                return new MrBeanPlayerAction();
+                return new RandomPlayer();
             default:
                 throw new IllegalArgumentException("Unknown player name: " + playerName);
         }

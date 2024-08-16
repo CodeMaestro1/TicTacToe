@@ -6,7 +6,7 @@ package model;
 
 import java.util.Objects;
 
-public class AiPlayer {
+public class AiPlayer   {
 
     private static final int LOSE_SCORE = -10;
     private static final int WIN_SCORE = 10;

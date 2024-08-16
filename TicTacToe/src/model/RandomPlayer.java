@@ -6,10 +6,18 @@ package model;
 
 import java.util.Random;
 
-public class RandomPlayer {
+import controller.GameController;
+import utils.SchedulerUtil;
+
+public class RandomPlayer extends Player{
     private int row;
     private int column;
     private static Random rand = new Random();
+    private static final String PLAYER_NAME = "Mr.Bean";
+    
+    public RandomPlayer() {
+    	super(PLAYER_NAME);
+    }
 
     /**
      * Generates a random move on the Tic-Tac-Toe board.
@@ -67,5 +75,16 @@ public class RandomPlayer {
      */
     public void setColumn(int column) {
         this.column = column;
+    }
+    
+    @Override
+    public void makeMove(GameController gc, int mover) {
+        playRandomMove(gc.getGameBoard().getBoard());
+        int tempRow = getRow();
+        int tempCol = getColumn();
+        
+        SchedulerUtil.scheduleMove(tempRow, tempCol, () -> {
+            gc.getGameBoard().getCells()[tempRow][tempCol].chooseCell();
+        });
     }
 }

@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 import controller.GameController;
 
-public class Player implements PlayerAction {
+public class Player {
 
 	private String name;
 	private int totalGames;
@@ -115,7 +115,11 @@ public class Player implements PlayerAction {
 		this.recentGames = recentGames;
 	}
 
-	@Override
+	/**
+	 * To be completed by its subclasses.
+	 * @param gc
+	 * @param mover
+	 */
 	public void makeMove(GameController gc, int mover) {
 		// TODO Auto-generated method stub
 	}
