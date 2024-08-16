@@ -11,8 +11,13 @@ public class AiPlayer {
     private static final int LOSE_SCORE = -10;
     private static final int WIN_SCORE = 10;
     private String playerSymbol;
+    private String opponentSymbol;
     private int bestRow;
     private int bestCol;
+    
+    private static final String SYMBOL_X = "X";
+    private static final String SYMBOL_O = "O";
+    
     
     /**
      * Constructor for the AiPlayer class.
@@ -22,6 +27,7 @@ public class AiPlayer {
      */
     public AiPlayer(String playerSymbol) {
         this.playerSymbol = playerSymbol;
+        this.opponentSymbol = playerSymbol.equals(SYMBOL_X) ? SYMBOL_O : SYMBOL_X;
     }
     
     /**
@@ -30,14 +36,14 @@ public class AiPlayer {
      * @param board          The 2D array representing the Tic-Tac-Toe board.
      * @param opponentSymbol The symbol of the opponent player (X or O).
      */
-    public void findBestMove(String[][] board, String opponentSymbol) {
+    public void findBestMove(String[][] board) {
         int bestVal = Integer.MIN_VALUE;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j] == null) {
                     board[i][j] = playerSymbol;
-                    int moveVal = minimax(board, 1, false, opponentSymbol);
+                    int moveVal = minimax(board, 1, false);
                     board[i][j] = null;
 
                     if (moveVal > bestVal) {
@@ -60,7 +66,7 @@ public class AiPlayer {
      * @param opponentSymbol The symbol of the opponent player (X or O).
      * @return The calculated score for the current move during the Minimax algorithm.
      */
-    private int minimax(String[][] board, int depth, boolean isMax, String opponentSymbol) {
+    private int minimax(String[][] board, int depth, boolean isMax) {
         int score = evaluate(board, playerSymbol);
 
         if (score == WIN_SCORE)
@@ -72,7 +78,7 @@ public class AiPlayer {
         if (!isMoveLeft(board))
             return 0;
 
-        return isMax ? maximize(board, depth, opponentSymbol) : minimize(board, depth, opponentSymbol);
+        return isMax ? maximize(board, depth) : minimize(board, depth, opponentSymbol);
     }
 
     /**
@@ -80,17 +86,16 @@ public class AiPlayer {
      *
      * @param board          The 2D array representing the Tic-Tac-Toe board.
      * @param depth          The current depth of the search tree during the Minimax algorithm.
-     * @param opponentSymbol The symbol of the opponent player (X or O).
      * @return The maximum score achieved during the Minimax algorithm for the AI player's moves.
      */
-    private int maximize(String[][] board, int depth, String opponentSymbol) {
+    private int maximize(String[][] board, int depth) {
         int best = Integer.MIN_VALUE;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j] == null) {
                     board[i][j] = playerSymbol;
-                    best = Math.max(best, minimax(board, depth + 1, false, opponentSymbol));
+                    best = Math.max(best, minimax(board, depth + 1, false));
                     board[i][j] = null;
                 }
             }
@@ -114,7 +119,7 @@ public class AiPlayer {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j] == null) {
                     board[i][j] = opponentSymbol;
-                    best = Math.min(best, minimax(board, depth + 1, true, opponentSymbol));
+                    best = Math.min(best, minimax(board, depth + 1, true));
                     board[i][j] = null;
                 }
             }
@@ -132,9 +137,7 @@ public class AiPlayer {
      * @return The score indicating the desirability of the board state for the AI player.
      */
     private int evaluate(String[][] board, String playerSymbol) {
-    	
-        String opponentSymbol = playerSymbol.equals("X") ? "O" : "X";
-
+  
         if (hasVictory(board, playerSymbol)) {
             return WIN_SCORE;
         }

@@ -2,7 +2,9 @@ package model;
 
 import java.text.DecimalFormat;
 
-public class Player {
+import controller.GameController;
+
+public class Player implements PlayerAction {
 
 	private String name;
 	private int totalGames;
@@ -111,5 +113,10 @@ public class Player {
 
 	public void setRecentGames(String[][] recentGames) {
 		this.recentGames = recentGames;
+	}
+
+	@Override
+	public void makeMove(GameController gc, int mover) {
+		// TODO Auto-generated method stub
 	}
 }

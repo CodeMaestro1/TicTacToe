@@ -5,7 +5,6 @@
 package model;
 
 
-import java.awt.Color;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,9 +20,7 @@ public class GameModel {
     private String leftPlayerName;
     private Timer timer;
     
-    private static final int MOVE_DELAY = 1000; // 1 second delay for AI moves
-    private static final String SYMBOL_X = "X";
-    private static final String SYMBOL_O = "O";
+    
 
     /**
      * Constructor for the GameModel class.
@@ -53,7 +50,7 @@ public class GameModel {
      * If the right player's name is "Hal" and it's their turn (mover == 1), AI uses the Minimax algorithm to find the best move.
      * If the left player's name is "Hal" and it's their turn (mover == 0), AI uses the Minimax algorithm to find the best move.
      */
-    public void aiMove() {
+    /*public void aiMove() {
     	
         this.rightPlayerName = gc.getMain().getRightPlayer().getPlayer().getName();
         this.leftPlayerName = gc.getMain().getLeftPlayer().getPlayer().getName();
@@ -75,14 +72,14 @@ public class GameModel {
             
             scheduleMove(bestRow, bestCol);
         }
-    }
+    }*/
 
     /**
      * Executes Mr. Bean's move based on the right and left players' names.
      * If the right player's name is "Mr.Bean" and it's their turn (mover == 1), Mr. Bean makes a random move on the board.
      * If the left player's name is "Mr.Bean" and it's their turn (mover == 0), Mr. Bean makes a random move on the board.
      */
-    public void mrBeanMove() {
+    /*public void mrBeanMove() {
         rightPlayerName = gc.getMain().getRightPlayer().getPlayer().getName();
         leftPlayerName = gc.getMain().getLeftPlayer().getPlayer().getName();
 
@@ -101,7 +98,7 @@ public class GameModel {
             
             scheduleMove(row, col);
         }
-    }
+    }*/
     
     /**
     * Schedules a move to be executed after a specified delay.
@@ -114,7 +111,7 @@ public class GameModel {
     * @param row The row index of the cell where the move will be executed.
     * @param col The column index of the cell where the move will be executed.
     */
-    private void scheduleMove(int row, int col) {
+    /*private void scheduleMove(int row, int col) {
         if (timer != null) {
             timer.cancel();
         }
@@ -126,120 +123,7 @@ public class GameModel {
                 gc.getGameBoard().getCells()[row][col].chooseCell();
             }
         }, MOVE_DELAY);
-    }
-
-    /**
-     * Checks for a winning move on the Tic-Tac-Toe board.
-     * If a winning move is found, it handles the game end and updates player scores accordingly.
-     */
-    public boolean checkWinner() {
-        if (!inGame) {
-            return true; // The game is over.
-        }
-        
-        String[][] board = gc.getGameBoard().getBoard();
-
-        // Check rows
-        for (int i = 0; i < 3; i++) {
-            if (isWinningMove(board[i][0], board[i][1], board[i][2])) {
-                markWinningCellsInRow(i);
-                handleWinningMove(board[i][0]);
-                return true; // Return true if a win is found
-            }
-        }
-
-        // Check columns
-        for (int j = 0; j < 3; j++) {
-            if (isWinningMove(board[0][j], board[1][j], board[2][j])) {
-                markWinningCellsInColumn(j);
-                handleWinningMove(board[0][j]);
-                return true; // Return true if a win is found
-            }
-        }
-
-        // Check diagonals
-        if (isWinningMove(board[0][0], board[1][1], board[2][2])) {
-            markWinningCellsInDiagonal(true);
-            handleWinningMove(board[0][0]);
-            return true; // Return true if a win is found
-        } else if (isWinningMove(board[0][2], board[1][1], board[2][0])) {
-            markWinningCellsInDiagonal(false);
-            handleWinningMove(board[0][2]);
-            return true; // Return true if a win is found
-        }
-
-        // Check for a tie (if no win has been found)
-        if (isFull()) {
-            handleTie();
-            return true;
-        }
-
-        // If no win or tie is found, return false
-        return false;
-    }
-
-
-    private void markWinningCellsInRow(int row) {
-        for (int j = 0; j < 3; j++) {
-            gc.getGameBoard().getCells()[row][j].setBackground(Color.RED);
-        }
-    }
-
-    private void markWinningCellsInColumn(int col) {
-        for (int i = 0; i < 3; i++) {
-            gc.getGameBoard().getCells()[i][col].setBackground(Color.RED);
-        }
-    }
-
-    private void markWinningCellsInDiagonal(boolean isMainDiagonal) {
-        for (int i = 0; i < 3; i++) {
-            int j = isMainDiagonal ? i : 2 - i;
-            gc.getGameBoard().getCells()[i][j].setBackground(Color.RED);
-        }
-    }
-
-
-    private boolean isWinningMove(String symbol1, String symbol2, String symbol3) {
-        return symbol1 != null && symbol1.equals(symbol2) && symbol1.equals(symbol3);
-    }
-
-    private void handleWinningMove(String winBoardSymbol) {
-        Player leftPlayer;
-        Player rightPlayer;
-
-        rightPlayer = gc.getMain().getRightPlayer().getPlayer();
-        leftPlayer = gc.getMain().getLeftPlayer().getPlayer();
-
-        inGame = false;
-            
-        if (winBoardSymbol.equals(SYMBOL_X)) {
-            leftPlayer.setWins(leftPlayer.getWins() + 1);
-        } else {
-            rightPlayer.setWins(rightPlayer.getWins() + 1);
-        }
-
-        rightPlayer.setTotalGames(rightPlayer.getTotalGames() + 1);
-        leftPlayer.setTotalGames(leftPlayer.getTotalGames() + 1);
-        rightPlayer.updateScore();
-        leftPlayer.updateScore();
-
-    }
-
-    private void handleTie() {
-        Player leftPlayerTie;
-        Player rightPlayerTie;
-
-        rightPlayerTie = gc.getMain().getRightPlayer().getPlayer();
-        leftPlayerTie = gc.getMain().getLeftPlayer().getPlayer();
-        
-        inGame = false;
-        rightPlayerTie.setTies(rightPlayerTie.getTies() + 1);
-        leftPlayerTie.setTies(leftPlayerTie.getTies() + 1);
-        rightPlayerTie.setTotalGames(rightPlayerTie.getTotalGames() + 1);
-        leftPlayerTie.setTotalGames(leftPlayerTie.getTotalGames() + 1);
-        rightPlayerTie.updateScore();
-        leftPlayerTie.updateScore();
-    }
+    }*/
 
     /**
      * Checks if the Tic-Tac-Toe board is full (all cells are chosen).
