@@ -6,7 +6,10 @@ package model;
 
 import java.util.Objects;
 
-public class AiPlayer   {
+import controller.GameController;
+import utils.SchedulerUtil;
+
+public class AiPlayer extends Player  {
 
     private static final int LOSE_SCORE = -10;
     private static final int WIN_SCORE = 10;
@@ -17,6 +20,7 @@ public class AiPlayer   {
     
     private static final String SYMBOL_X = "X";
     private static final String SYMBOL_O = "O";
+    private static final String PLAYER_NAME = "Hal";
     
     
     /**
@@ -26,9 +30,22 @@ public class AiPlayer   {
      * @param playerSymbol The symbol of the AI player (X or O).
      */
     public AiPlayer(String playerSymbol) {
+    	super(PLAYER_NAME);
         this.playerSymbol = playerSymbol;
         this.opponentSymbol = playerSymbol.equals(SYMBOL_X) ? SYMBOL_O : SYMBOL_X;
+        
     }
+    
+    @Override
+    public void makeMove(GameController gc, int mover) {
+        findBestMove(gc.getGameBoard().getBoard());
+        int tempBestRow = getBestRow();
+        int tempBestCol = getBestCol();
+
+        SchedulerUtil.scheduleMove(tempBestRow, tempBestCol, () -> {
+        	gc.getGameBoard().getCells()[tempBestRow][tempBestCol].chooseCell();
+    });
+}
     
     /**
      * Finds the best move given the current state of the game board using the Minimax algorithm.
@@ -215,4 +232,5 @@ public class AiPlayer   {
     public int getBestCol() {
         return bestCol;
     }
+    
 }

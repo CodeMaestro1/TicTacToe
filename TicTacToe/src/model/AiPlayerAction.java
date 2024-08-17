@@ -3,7 +3,7 @@ package model;
 import controller.GameController;
 import utils.SchedulerUtil;
 
-public class AiPlayerAction implements PlayerAction {
+/*public class AiPlayerAction implements PlayerAction {
 
     private final String symbol;
 
@@ -22,4 +22,4 @@ public class AiPlayerAction implements PlayerAction {
         	gc.getGameBoard().getCells()[bestRow][bestCol].chooseCell();
     });
 }
-    }
+    }*/
