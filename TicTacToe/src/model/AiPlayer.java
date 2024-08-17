@@ -29,13 +29,19 @@ public class AiPlayer extends Player  {
      *
      * @param playerSymbol The symbol of the AI player (X or O).
      */
-    public AiPlayer(String playerSymbol) {
-    	super(PLAYER_NAME);
+    public AiPlayer(String playerName, String playerSymbol) {
+    	super(PLAYER_NAME, playerSymbol);
         this.playerSymbol = playerSymbol;
         this.opponentSymbol = playerSymbol.equals(SYMBOL_X) ? SYMBOL_O : SYMBOL_X;
         
     }
     
+    
+    /**
+     * Executes an AI move based on the right and left players' names.
+     * If the right player's name is "Hal" and it's their turn (mover == 1), AI uses the Minimax algorithm to find the best move.
+     * If the left player's name is "Hal" and it's their turn (mover == 0), AI uses the Minimax algorithm to find the best move.
+     */
     @Override
     public void makeMove(GameController gc, int mover) {
         findBestMove(gc.getGameBoard().getBoard());

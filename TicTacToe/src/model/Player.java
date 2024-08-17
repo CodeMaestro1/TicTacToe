@@ -13,10 +13,11 @@ public class Player {
 	private int ties;
 	private String[][] recentGames;
 	private static final DecimalFormat df = new DecimalFormat("#.###"); // formatting for score
+	private String symbol;  // New symbol field
 	
 	
 
-	public Player(String name) {
+	public Player(String name, String symbol) {
 		
 		this.recentGames = new String[5][2];
 		for(int a=0; a<5; a++) {
@@ -30,11 +31,16 @@ public class Player {
 		this.score = 0;
 		this.wins = 0;
 		this.ties = 0;
+		this.symbol = symbol;
 	}
 	
 	public Player() {
 		this(" ");
 		
+	}
+
+	public Player(String string) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {
@@ -114,7 +120,16 @@ public class Player {
 	public void setRecentGames(String[][] recentGames) {
 		this.recentGames = recentGames;
 	}
+	
+	
+	public String getSymbol() {
+		return symbol;
+	}
 
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+	
 	/**
 	 * To be completed by its subclasses.
 	 * @param gc
@@ -123,4 +138,6 @@ public class Player {
 	public void makeMove(GameController gc, int mover) {
 		// TODO Auto-generated method stub
 	}
+
+
 }

@@ -20,7 +20,7 @@ public class PlayerActionFactory {
     public static Player createPlayerAction(String playerName, String symbol) {
         switch (playerName) {
             case BEST_PLAYER:
-                return new AiPlayer(symbol);
+                return new AiPlayer(BEST_PLAYER, symbol);
             case RANDOM_PLAYER:
                 return new RandomPlayer();
             default:

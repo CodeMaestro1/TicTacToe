@@ -16,7 +16,7 @@ public class RandomPlayer extends Player{
     private static final String PLAYER_NAME = "Mr.Bean";
     
     public RandomPlayer() {
-    	super(PLAYER_NAME);
+    	super(PLAYER_NAME, "O");
     }
 
     /**
@@ -77,6 +77,11 @@ public class RandomPlayer extends Player{
         this.column = column;
     }
     
+    /**
+     * Executes Mr. Bean's move based on the right and left players' names.
+     * If the right player's name is "Mr.Bean" and it's their turn (mover == 1), Mr. Bean makes a random move on the board.
+     * If the left player's name is "Mr.Bean" and it's their turn (mover == 0), Mr. Bean makes a random move on the board.
+     */
     @Override
     public void makeMove(GameController gc, int mover) {
         playRandomMove(gc.getGameBoard().getBoard());
