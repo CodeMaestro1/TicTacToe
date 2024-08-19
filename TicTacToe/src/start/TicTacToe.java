@@ -1,6 +1,7 @@
 package start;
 
 import java.io.IOException;
+
 import controller.GameController;
 
 public class TicTacToe {

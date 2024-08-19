@@ -5,9 +5,6 @@
 package model;
 
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import controller.GameController;
 
 public class GameModel {

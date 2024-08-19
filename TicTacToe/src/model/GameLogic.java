@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Color;
+
 import controller.GameController;
 
 public class GameLogic {
