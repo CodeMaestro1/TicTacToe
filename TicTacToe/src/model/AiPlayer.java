@@ -43,7 +43,7 @@ public class AiPlayer extends Player  {
      * If the left player's name is "Hal" and it's their turn (mover == 0), AI uses the Minimax algorithm to find the best move.
      */
     @Override
-    public void makeMove(GameController gc, int mover) {
+    public void makeMove(GameController gc) {
         findBestMove(gc.getGameBoard().getBoard());
         int tempBestRow = getBestRow();
         int tempBestCol = getBestCol();

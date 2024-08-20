@@ -83,7 +83,7 @@ public class RandomPlayer extends Player{
      * If the left player's name is "Mr.Bean" and it's their turn (mover == 0), Mr. Bean makes a random move on the board.
      */
     @Override
-    public void makeMove(GameController gc, int mover) {
+    public void makeMove(GameController gc) {
         playRandomMove(gc.getGameBoard().getBoard());
         int tempRow = getRow();
         int tempCol = getColumn();

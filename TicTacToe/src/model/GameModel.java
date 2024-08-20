@@ -5,24 +5,44 @@
 package model;
 
 
+import java.io.IOException;
+
 import controller.GameController;
+import view.MainWindow;
 
 public class GameModel {
 
 	private GameController gc;
     private int mover;
     private boolean inGame;
+    private MainWindow main;
     
     /**
      * Constructor for the GameModel class.
      * Initializes the game state and sets up the RandomPlayer instance for Mr. Bean moves.
      *
      * @param gc The GameController instance associated with this model.
+     * @throws IOException 
      */
-    public GameModel(GameController gc) {
+    public GameModel(GameController gc) throws IOException {
         this.gc = gc;
         this.inGame = false;
-        new RandomPlayer();
+        this.main =new MainWindow(this.gc);
+    }
+    
+    /**
+     * Changes the current mover (player turn) and schedules AI moves with a delay.
+     */
+    public void changeMover() {
+        if (inGame) {
+        	
+        	Player leftPlayer  = main.getLeftPlayer().getPlayer();
+        	Player rightPlayer = main.getRightPlayer().getPlayer();
+        	
+            mover = (mover == 0) ? 1 : 0;
+            Player currentPlayer = mover == 0 ? leftPlayer  : rightPlayer;
+            currentPlayer.makeMove(gc); // Delegate move to the current player
+        }
     }
 
     /**
@@ -35,37 +55,6 @@ public class GameModel {
     public boolean checkValidInput(int row, int column) {
         return row >= 1 && row <= 3 && column >= 1 && column <= 3;
     }
-
-
-    /**
-     * Checks if the Tic-Tac-Toe board is full (all cells are chosen).
-     *
-     * @return true if the board is full, false otherwise.
-     */
-    public boolean isFull() {
-        String[][] board = gc.getGameBoard().getBoard();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i][j] == null) {
-                    return false; // If any cell is null, the board is not full
-                }
-            }
-        }
-        return true; // All cells are non-null, indicating a full board
-    }
-
-
-    /**
-     * Changes the current mover (player turn) and schedules AI moves with a delay.
-     */
-    public void changeMover() {
-        if (inGame) {
-            mover = (mover == 0) ? 1 : 0;
-            aiMove();
-            mrBeanMove();
-        }
-    }
-
 
     /**
      * Resets the Tic-Tac-Toe board and associated variables to start a new game.
@@ -98,8 +87,6 @@ public class GameModel {
      */
     public void setMover(int mover) {
         this.mover = mover;
-        mrBeanMove();
-        aiMove();
     }
 
     /**

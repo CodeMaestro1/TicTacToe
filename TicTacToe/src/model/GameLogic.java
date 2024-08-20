@@ -120,35 +120,24 @@ public class GameLogic {
         leftPlayer.updateScore();
     }
 
+   /**
+    * Checks if the Tic-Tac-Toe board is full (all cells are chosen).
+    *
+    * @return true if the board is full, false otherwise.
+    */
     private boolean isFull() {
         String[][] board = gc.getGameBoard().getBoard();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j] == null) {
-                    return false;
+                    return false; // If any cell is null, the board is not full
                 }
             }
         }
-        return true;
-    }
-
-    public void changeMover() {
-        if (inGame) {
-            mover = (mover == 0) ? 1 : 0;
-        }
+        return true; // All cells are non-null, indicating a full board
     }
 
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
-    }
-
-    
-   /**
-    * Gets the current mover (player turn).
-    *
-    * @return The current mover (0 for left player, 1 for right player).
-    */
-    public int getMover() {
-        return mover;
     }
 }

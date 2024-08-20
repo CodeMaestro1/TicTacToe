@@ -1,143 +1,138 @@
 package model;
 
 import java.text.DecimalFormat;
-
 import controller.GameController;
 
 public class Player {
 
-	private String name;
-	private int totalGames;
-	private float score;
-	private int wins;
-	private int ties;
-	private String[][] recentGames;
-	private static final DecimalFormat df = new DecimalFormat("#.###"); // formatting for score
-	private String symbol;  // New symbol field
-	
-	
+    private String name;
+    private int totalGames;
+    private float score;
+    private int wins;
+    private int ties;
+    private String[][] recentGames;
+    private static final DecimalFormat df = new DecimalFormat("#.###"); // formatting for score
+    private String symbol;
 
-	public Player(String name, String symbol) {
-		
-		this.recentGames = new String[5][2];
-		for(int a=0; a<5; a++) {
-			for(int b=0; b<2; b++) {
-				recentGames[a][b]="None";
-			}
-		}
-		
-		this.name = name;
-		this.totalGames = 0;
-		this.score = 0;
-		this.wins = 0;
-		this.ties = 0;
-		this.symbol = symbol;
-	}
-	
-	public Player() {
-		this(" ");
-		
-	}
+    public Player(String name, String symbol) {
+        this.name = name;
+        this.symbol = symbol;
+        this.recentGames = initializeRecentGames();
+        this.totalGames = 0;
+        this.score = 0;
+        this.wins = 0;
+        this.ties = 0;
+    }
 
-	public Player(String string) {
-		// TODO Auto-generated constructor stub
-	}
+    public Player(String name) {
+        this(name, " "); // Default symbol is a space
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Player() {
+        this(" ", " "); // Default name and symbol as spaces
+    } //To be deleted soon.
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String[][] initializeRecentGames() {
+        String[][] games = new String[5][2];
+        for (int i = 0; i < games.length; i++) {
+            for (int j = 0; j < games[i].length; j++) {
+                games[i][j] = "None";
+            }
+        }
+        return games;
+    }
 
-	public int getTotalGames() {
-		return totalGames;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setTotalGames(int totalGames) {
-		this.totalGames = totalGames;
-	}
-	
-	
-	public float getScore() {
-		return score;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setScore(float score) {
-		this.score = score;
-	}
-	
-	public void updateScore() {
-	    String formattedScore = df.format((double) 50 * ((2 * this.wins) + this.ties) / this.totalGames);
-	    
-	    // Replace any commas with periods before parsing as a float
-	    formattedScore = formattedScore.replace(",", ".");
-	    
-	    this.score = Float.parseFloat(formattedScore);
-	}
+    public int getTotalGames() {
+        return totalGames;
+    }
 
+    public void setTotalGames(int totalGames) {
+        this.totalGames = totalGames;
+    }
 
-	public int getWins() {
-		return wins;
-	}
+    public float getScore() {
+        return score;
+    }
 
-	public void setWins(int wins) {
-		this.wins = wins;
-	}
+    public void setScore(float score) {
+        this.score = score;
+    }
 
-	public int getTies() {
-		return ties;
-	}
+    public void updateScore() {
+        if (totalGames > 0) {
+            String formattedScore = df.format(50.0 * ((2 * this.wins) + this.ties) / this.totalGames);
+            formattedScore = formattedScore.replace(",", ".");
+            this.score = Float.parseFloat(formattedScore);
+        } else {
+            this.score = 0;
+        }
+    }
 
-	public void setTies(int ties) {
-		this.ties = ties;
-	}
+    public int getWins() {
+        return wins;
+    }
 
-	public String[][] getRecentGames() {
-		return recentGames;
-	}
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
 
-	public void setRecentGame(String player1, String player2) {
-		
-		for(int a=4; a>0; a--) {
-			recentGames[a][0]=getRecentGame(a-1, 0);
-			recentGames[a][1]=getRecentGame(a-1, 1);
-		}
-		
-		
-		recentGames[0][0]=player1;
-		recentGames[0][1]=player2;
-		
-		
-	}
-	
-	public String getRecentGame(int a , int b) {
-		return recentGames[a][b];
-	}
-	
+    public int getTies() {
+        return ties;
+    }
 
-	public void setRecentGames(String[][] recentGames) {
-		this.recentGames = recentGames;
-	}
-	
-	
-	public String getSymbol() {
-		return symbol;
-	}
+    public void setTies(int ties) {
+        this.ties = ties;
+    }
 
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
-	
-	/**
-	 * To be completed by its subclasses.
-	 * @param gc
-	 * @param mover
-	 */
-	public void makeMove(GameController gc, int mover) {
-		// TODO Auto-generated method stub
-	}
+    public String[][] getRecentGames() {
+        return recentGames.clone();
+    }
 
+    public void setRecentGame(String player1, String player2) {
+        for (int i = recentGames.length - 1; i > 0; i--) {
+            recentGames[i] = recentGames[i - 1].clone();
+        }
+        recentGames[0][0] = player1;
+        recentGames[0][1] = player2;
+    }
 
+    public String getRecentGame(int row, int col) {
+        if (row < 0 || row >= recentGames.length || col < 0 || col >= recentGames[row].length) {
+            throw new IndexOutOfBoundsException("Invalid recent game index");
+        }
+        return recentGames[row][col];
+    }
+
+    public void setRecentGames(String[][] recentGames) {
+        if (recentGames != null && recentGames.length == 5 && recentGames[0].length == 2) {
+            this.recentGames = recentGames.clone();
+        } else {
+            throw new IllegalArgumentException("Invalid recent games array");
+        }
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    /**
+     * To be completed by its subclasses.
+     * @param gc
+     * @param mover
+     */
+    public void makeMove(GameController gc) {
+        // Method to be implemented in subclasses
+    }
 }

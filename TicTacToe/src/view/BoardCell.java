@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import controller.GameController;
+import model.GameLogic;
 
 @SuppressWarnings({ "serial" })
 public class BoardCell extends GamePanel implements MouseListener {
@@ -21,11 +22,13 @@ public class BoardCell extends GamePanel implements MouseListener {
 	private boolean clicked;
 	private String mark;
 	private MainWindow main;
+	private GameLogic logic;
 	
 	
 	public BoardCell (GameController gc, int row, int collumn) {
 		super(gc);
 		this.gc = gc;
+		this.logic = new GameLogic(this.gc);
 		this.setBackground(Color.WHITE);
 		this.row = row;
 		this.collumn = collumn;
@@ -64,7 +67,7 @@ public class BoardCell extends GamePanel implements MouseListener {
 
 	        chosen = true;
 	        gc.getGameBoard().getBoard()[this.row][this.collumn] = (gc.getModel().getMover() == 0) ? "X" : "O";
-	        if (gc.getModel().checkWinner()) {
+	        if (logic.checkWinner()) {
 	            gc.getMain().getBannerPanel().getDoneButton().setEnabled(true);
 	        }
 

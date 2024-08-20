@@ -95,7 +95,7 @@ public class PlayerRoster {
     private void initialization() {
         this.numOfPlayers = 3;
         player = new Player[100];
-        player[0] = PlayerActionFactory.createPlayerAction("Hall", "O");
+        player[0] = PlayerActionFactory.createPlayerAction("Hal", "O");
         player[1] = PlayerActionFactory.createPlayerAction("Mr.Bean", null);
         player[2] = new Player("Beavis");
     }
