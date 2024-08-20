@@ -43,7 +43,7 @@ public class PlayerPanel extends JPanel {
     public PlayerPanel(GameController gc, int numOfSelection) {
         this.gc = gc;
         this.numOfSelection = numOfSelection;
-        this.player = null;
+        
         setPreferredSize(new Dimension(MainWindow.PLAYER_WIDTH, MainWindow.HEIGHT - MainWindow.TOP_HEIGHT));
         setBorder(new LineBorder(Color.GRAY, 1, true));
         setBackground(Color.GREEN);
@@ -63,6 +63,7 @@ public class PlayerPanel extends JPanel {
 
         playerStats.setEditable(false);
         playerName.setEditable(false);
+        this.player = new Player(getPlayerName().getName()); ///////////////////////////
     }
 
     /**

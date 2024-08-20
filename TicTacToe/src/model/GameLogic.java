@@ -7,13 +7,11 @@ import controller.GameController;
 public class GameLogic {
 
     private GameController gc;
-    private int mover;
     private boolean inGame;
 
     public GameLogic(GameController gc) {
         this.gc = gc;
         this.inGame = false;
-        this.mover = 0;
     }
     
     

@@ -16,6 +16,7 @@ public class GameModel {
     private int mover;
     private boolean inGame;
     private MainWindow main;
+    private GameLogic logic;
     
     /**
      * Constructor for the GameModel class.
@@ -28,6 +29,7 @@ public class GameModel {
         this.gc = gc;
         this.inGame = false;
         this.main =new MainWindow(this.gc);
+        this.logic = new GameLogic(this.gc);
     }
     
     /**
@@ -42,6 +44,7 @@ public class GameModel {
             mover = (mover == 0) ? 1 : 0;
             Player currentPlayer = mover == 0 ? leftPlayer  : rightPlayer;
             currentPlayer.makeMove(gc); // Delegate move to the current player
+            logic.checkWinner();
         }
     }
 
